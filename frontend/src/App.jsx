@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import AIChatAssistant from './components/AIChatAssistant';
 import ProtectedRoute from './components/ProtectedRoute';
 import Home from './pages/Home';
 import Courses from './pages/Courses';
@@ -40,6 +41,7 @@ export default function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
+      <AIChatAssistant />
     </>
   );
 }

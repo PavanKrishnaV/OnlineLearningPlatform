@@ -60,6 +60,28 @@ public class DataLoader implements CommandLineRunner {
             userRepository.save(user);
         }
 
+        // Create student demo user
+        if (!userRepository.existsByEmail("student@example.com")) {
+            User student = new User();
+            student.setEmail("student@example.com");
+            student.setPassword(passwordEncoder.encode("password"));
+            student.setFullName("Pavan Kumar");
+            Role userRole = roleRepository.findByName("ROLE_USER").get();
+            student.setRoles(Set.of(userRole));
+            userRepository.save(student);
+        }
+
+        // Create personal user account
+        if (!userRepository.existsByEmail("avanpavi2506@gmail.com")) {
+            User personal = new User();
+            personal.setEmail("avanpavi2506@gmail.com");
+            personal.setPassword(passwordEncoder.encode("password"));
+            personal.setFullName("Pavan Kumar");
+            Role userRole = roleRepository.findByName("ROLE_USER").get();
+            personal.setRoles(Set.of(userRole));
+            userRepository.save(personal);
+        }
+
         // Seed courses if empty
         if (courseRepository.count() == 0) {
             // Course 1: Java Programming
@@ -75,10 +97,10 @@ public class DataLoader implements CommandLineRunner {
             c1 = courseRepository.save(c1);
 
             addLesson(c1, "Introduction to Java", "Learn what Java is and set up your development environment.", "https://www.youtube.com/watch?v=eIrMbAQSU34", 1, 15);
-            addLesson(c1, "Variables and Data Types", "Understanding primitive and reference data types in Java.", "https://www.youtube.com/watch?v=eIrMbAQSU34&t=100s", 2, 20);
-            addLesson(c1, "Control Flow Statements", "Master if-else, switch, loops, and branching in Java.", "https://www.youtube.com/watch?v=eIrMbAQSU34&t=200s", 3, 25);
-            addLesson(c1, "Object-Oriented Programming", "Learn classes, objects, inheritance, polymorphism, and encapsulation.", "https://www.youtube.com/watch?v=eIrMbAQSU34&t=300s", 4, 30);
-            addLesson(c1, "Collections Framework", "Master Lists, Sets, Maps, and Queues in Java.", "https://www.youtube.com/watch?v=eIrMbAQSU34&t=400s", 5, 25);
+            addLesson(c1, "Variables and Data Types", "Understanding primitive and reference data types in Java.", "https://www.youtube.com/watch?v=LftG_XpTqZc", 2, 20);
+            addLesson(c1, "Control Flow Statements", "Master if-else, switch, loops, and branching in Java.", "https://www.youtube.com/watch?v=mAtkpqV7FUI", 3, 25);
+            addLesson(c1, "Object-Oriented Programming", "Learn classes, objects, inheritance, polymorphism, and encapsulation.", "https://www.youtube.com/watch?v=pTB0EiLXUC8", 4, 30);
+            addLesson(c1, "Collections Framework", "Master Lists, Sets, Maps, and Queues in Java.", "https://www.youtube.com/watch?v=2K6Z-q7lB34", 5, 25);
 
             // Course 2: React.js
             Course c2 = new Course();
@@ -92,11 +114,11 @@ public class DataLoader implements CommandLineRunner {
             c2.setLevel("Intermediate");
             c2 = courseRepository.save(c2);
 
-            addLesson(c2, "React Fundamentals", "Understanding JSX, components, and the virtual DOM.", "https://www.youtube.com/watch?v=bMknfKXIFA8", 1, 20);
-            addLesson(c2, "State and Props", "Managing component state and passing data with props.", "https://www.youtube.com/watch?v=bMknfKXIFA8&t=600s", 2, 25);
-            addLesson(c2, "React Hooks Deep Dive", "useState, useEffect, useContext, useReducer, and custom hooks.", "https://www.youtube.com/watch?v=bMknfKXIFA8&t=1200s", 3, 30);
-            addLesson(c2, "React Router", "Client-side routing and navigation in React applications.", "https://www.youtube.com/watch?v=bMknfKXIFA8&t=1800s", 4, 20);
-            addLesson(c2, "API Integration with Axios", "Connecting React apps to REST APIs and handling async data.", "https://www.youtube.com/watch?v=bMknfKXIFA8&t=2400s", 5, 25);
+            addLesson(c2, "React Fundamentals", "Understanding JSX, components, and the virtual DOM.", "https://www.youtube.com/watch?v=SqcY0GlETPk", 1, 20);
+            addLesson(c2, "State and Props", "Managing component state and passing data with props.", "https://www.youtube.com/watch?v=35lXWvCu70U", 2, 25);
+            addLesson(c2, "React Hooks Deep Dive", "useState, useEffect, useContext, useReducer, and custom hooks.", "https://www.youtube.com/watch?v=LlvBzyy-558", 3, 30);
+            addLesson(c2, "React Router", "Client-side routing and navigation in React applications.", "https://www.youtube.com/watch?v=oTIJunBa6MA", 4, 20);
+            addLesson(c2, "API Integration with Axios", "Connecting React apps to REST APIs and handling async data.", "https://www.youtube.com/watch?v=RG9tmiz8_6s", 5, 25);
 
             // Course 3: Python
             Course c3 = new Course();
@@ -110,10 +132,10 @@ public class DataLoader implements CommandLineRunner {
             c3.setLevel("Beginner");
             c3 = courseRepository.save(c3);
 
-            addLesson(c3, "Python Basics", "Variables, data types, operators, and control flow in Python.", "https://www.youtube.com/watch?v=_uQrJ0TkZlc", 1, 20);
-            addLesson(c3, "NumPy for Numerical Computing", "Array operations, broadcasting, and mathematical functions.", "https://www.youtube.com/watch?v=_uQrJ0TkZlc&t=500s", 2, 25);
-            addLesson(c3, "Pandas for Data Analysis", "DataFrames, data cleaning, filtering, and aggregation.", "https://www.youtube.com/watch?v=_uQrJ0TkZlc&t=1000s", 3, 30);
-            addLesson(c3, "Data Visualization with Matplotlib", "Creating charts, plots, and interactive visualizations.", "https://www.youtube.com/watch?v=_uQrJ0TkZlc&t=1500s", 4, 20);
+            addLesson(c3, "Python Basics", "Variables, data types, operators, and control flow in Python.", "https://www.youtube.com/watch?v=rfscVS0vtbw", 1, 20);
+            addLesson(c3, "NumPy for Numerical Computing", "Array operations, broadcasting, and mathematical functions.", "https://www.youtube.com/watch?v=QUT1VHiLmmI", 2, 25);
+            addLesson(c3, "Pandas for Data Analysis", "DataFrames, data cleaning, filtering, and aggregation.", "https://www.youtube.com/watch?v=vmEHCJofslg", 3, 30);
+            addLesson(c3, "Data Visualization with Matplotlib", "Creating charts, plots, and interactive visualizations.", "https://www.youtube.com/watch?v=OZOOLe2olNo", 4, 20);
 
             // Course 4: Spring Boot
             Course c4 = new Course();

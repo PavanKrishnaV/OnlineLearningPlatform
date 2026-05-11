@@ -8,7 +8,7 @@ const faqs = [
   { q: 'How do I track my progress?', a: 'Your progress is automatically tracked as you complete lessons. Visit "My Courses" to see your overall progress for each enrolled course.' },
   { q: 'How do I get a certificate?', a: 'Complete all lessons in a course to earn your certificate. Once all lessons are marked complete, you can download your certificate as a PDF.' },
   { q: 'Can I watch videos offline?', a: 'Currently, videos are streamed online. You need an internet connection to watch course videos.' },
-  { q: 'How do I contact support?', a: 'Visit our Contact page or email us at support@learnhub.com. We typically respond within 24 hours.' }
+  { q: 'How do I contact support?', a: 'Visit our Contact page or email us at support@skillbridge.com. We typically respond within 24 hours.' }
 ];
 
 export default function Help() {

@@ -66,6 +66,13 @@ export default function CertificatePage() {
     doc.text(`Certificate #: ${cert.certificateNumber}`, 148.5, 165, { align: 'center' });
     doc.text(`Issued: ${new Date(cert.issuedAt).toLocaleDateString()}`, 148.5, 175, { align: 'center' });
     doc.text('SkillBridge - Online Learning Platform', 148.5, 185, { align: 'center' });
+    
+    // QR Code for Verification (Mocked but visually authentic)
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://skillbridge.com/verify/${cert.certificateNumber}`;
+    doc.addImage(qrUrl, 'PNG', 240, 150, 30, 30);
+    doc.setFontSize(8);
+    doc.text('Scan to Verify', 255, 185, { align: 'center' });
+
     doc.save(`Certificate_${cert.courseName.replace(/\s+/g, '_')}.pdf`);
     toast.success('Certificate downloaded!');
   };
@@ -84,10 +91,23 @@ export default function CertificatePage() {
               <div className="cert-name">{cert.userName}</div>
               <p style={{ color: 'var(--text-secondary)', position: 'relative' }}>has successfully completed</p>
               <div className="cert-name" style={{ color: 'var(--gradient-end)' }}>{cert.courseName}</div>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '16px', position: 'relative' }}>
-                Certificate #: {cert.certificateNumber} · Issued: {new Date(cert.issuedAt).toLocaleDateString()}
-              </p>
-              <button className="btn btn-primary" onClick={downloadPDF} style={{ marginTop: '24px', position: 'relative' }}>
+              
+              <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '24px', marginTop: '24px', position: 'relative' }}>
+                <div style={{ textAlign: 'left', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+                  <p>Certificate #: {cert.certificateNumber}</p>
+                  <p>Issued: {new Date(cert.issuedAt).toLocaleDateString()}</p>
+                  <p>Status: <span style={{ color: 'var(--success)', fontWeight: 700 }}>VERIFIED</span></p>
+                </div>
+                <div style={{ background: '#fff', padding: '8px', borderRadius: '8px' }}>
+                  <img 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://skillbridge.com/verify/${cert.certificateNumber}`} 
+                    alt="Verification QR" 
+                    style={{ width: '80px', height: '80px' }}
+                  />
+                </div>
+              </div>
+
+              <button className="btn btn-primary" onClick={downloadPDF} style={{ marginTop: '32px', position: 'relative' }}>
                 <FiDownload /> Download PDF
               </button>
             </div>

@@ -22,9 +22,9 @@ export default function Contact() {
             <div>
               <h3 style={{ fontWeight: 700, marginBottom: '24px' }}>Get in Touch</h3>
               {[
-                { icon: <FiMail />, label: 'Email', val: 'support@learnhub.com' },
+                { icon: <FiMail />, label: 'Email', val: 'support@skillbridge.com' },
                 { icon: <FiPhone />, label: 'Phone', val: '+91-9876543210' },
-                { icon: <FiMapPin />, label: 'Address', val: 'Hyderabad, Telangana, India' }
+                { icon: <FiMapPin />, label: 'Address', val: 'Kolar, Karnataka, India' }
               ].map((item, i) => (
                 <div key={i} style={{ display: 'flex', gap: '12px', marginBottom: '20px', alignItems: 'center' }}>
                   <div style={{ width: '44px', height: '44px', borderRadius: '50%', background: 'rgba(99,102,241,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--accent-light)', flexShrink: 0 }}>{item.icon}</div>

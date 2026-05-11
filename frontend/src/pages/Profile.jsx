@@ -37,6 +37,16 @@ export default function Profile() {
             </div>
             <div className="stat-card"><h3><FiBookOpen /> Courses Enrolled</h3><div className="stat-value">{enrollments.length}</div></div>
             <div className="stat-card"><h3><FiAward /> Certificates</h3><div className="stat-value">{certificates.length}</div></div>
+            <div className="stat-card">
+              <h3>⚡ Learning Streak</h3>
+              <div className="stat-value" style={{ color: '#fb923c' }}>7 Days</div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>You&apos;re on fire! Keep it up.</p>
+            </div>
+            <div className="stat-card">
+              <h3>💎 Skill Points (XP)</h3>
+              <div className="stat-value" style={{ color: '#fbbf24' }}>1,250</div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>Next level: Expert</p>
+            </div>
           </div>
 
           {certificates.length > 0 && (

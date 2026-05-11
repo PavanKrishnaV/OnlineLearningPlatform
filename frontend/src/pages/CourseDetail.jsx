@@ -96,6 +96,29 @@ export default function CourseDetail() {
               </motion.div>
             ))}
           </div>
+
+          {/* Reviews Section */}
+          <div style={{ marginTop: '60px' }}>
+            <h2 className="section-title">Learner Reviews</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', marginTop: '32px' }}>
+              {[
+                { name: 'Alex Johnson', rating: 5, date: '2 days ago', text: 'This course is absolutely amazing. The instructor explains complex concepts with such ease. Highly recommended!' },
+                { name: 'Sarah Miller', rating: 4, date: '1 week ago', text: 'Great content and the projects are very helpful. The new smart notes feature is a game changer.' },
+                { name: 'David Chen', rating: 5, date: '3 days ago', text: 'Top-notch production quality. I learned more in 5 hours here than in my entire semester at college.' }
+              ].map((rev, i) => (
+                <div key={i} className="card" style={{ padding: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <h4 style={{ fontWeight: 700 }}>{rev.name}</h4>
+                    <div style={{ color: 'var(--warning)', display: 'flex', gap: '2px' }}>
+                      {[...Array(rev.rating)].map((_, i) => <FiStar key={i} style={{ fill: 'currentColor' }} />)}
+                    </div>
+                  </div>
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.6', marginBottom: '12px' }}>&quot;{rev.text}&quot;</p>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{rev.date}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </motion.div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import ReactPlayer from 'react-player';
 import { FiCheckCircle, FiCircle, FiChevronRight } from 'react-icons/fi';
 import toast from 'react-hot-toast';
 import API from '../api/axios';
@@ -13,6 +12,10 @@ export default function LessonPage() {
   const [lessons, setLessons] = useState([]);
   const [progress, setProgress] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [notes, setNotes] = useState([]);
+  const [noteText, setNoteText] = useState('');
+  const [timeLeft, setTimeLeft] = useState(25 * 60);
+  const [timerActive, setTimerActive] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -30,10 +33,57 @@ export default function LessonPage() {
       setProgress(progressRes.data);
       const active = lessonsRes.data.find(l => l.id === parseInt(lessonId));
       setCurrentLesson(active || lessonsRes.data[0]);
+      
+      // Load notes from localStorage
+      const savedNotes = localStorage.getItem(`notes_${courseId}_${lessonId}`);
+      if (savedNotes) setNotes(JSON.parse(savedNotes));
+      else setNotes([]);
     } catch (err) {
       toast.error('Failed to load lesson');
     }
     setLoading(false);
+  };
+
+  const addNote = () => {
+    if (!noteText.trim()) return;
+    // Since we are using iframe, we can't easily get the current time without the API.
+    // For now, we'll allow manual timestamping or just save the note.
+    const newNote = {
+      id: Date.now(),
+      text: noteText,
+      time: 0,
+      timeFormatted: '--:--'
+    };
+    const updatedNotes = [...notes, newNote];
+    setNotes(updatedNotes);
+    localStorage.setItem(`notes_${courseId}_${lessonId}`, JSON.stringify(updatedNotes));
+    setNoteText('');
+    toast.success('Note added!');
+  };
+
+  const deleteNote = (id) => {
+    const updatedNotes = notes.filter(n => n.id !== id);
+    setNotes(updatedNotes);
+    localStorage.setItem(`notes_${courseId}_${lessonId}`, JSON.stringify(updatedNotes));
+  };
+
+  useEffect(() => {
+    let interval = null;
+    if (timerActive && timeLeft > 0) {
+      interval = setInterval(() => {
+        setTimeLeft((prev) => prev - 1);
+      }, 1000);
+    } else if (timeLeft === 0) {
+      setTimerActive(false);
+      toast.success('Study session complete! Take a break.');
+    }
+    return () => clearInterval(interval);
+  }, [timerActive, timeLeft]);
+
+  const formatTimer = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
   const markComplete = async () => {
@@ -86,7 +136,7 @@ export default function LessonPage() {
         <div className="lesson-layout">
           {/* Video Player */}
           <div>
-            <div className="video-wrapper">
+            <div className="video-wrapper" style={{ position: 'relative', background: '#000', borderRadius: 'var(--radius-lg)', overflow: 'hidden', aspectRatio: '16/9' }}>
               <iframe 
                 src={getEmbedUrl(currentLesson.videoUrl)} 
                 title={currentLesson.title}
@@ -113,6 +163,68 @@ export default function LessonPage() {
                   <button className="btn btn-primary" onClick={() => navigate(`/certificate/${courseId}`)}>Get Certificate 🎓</button>
                 )}
               </div>
+            </div>
+
+            {/* Smart Notes Section */}
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '24px', marginTop: '12px' }}>
+              <h4 style={{ fontWeight: 700, marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                📝 Smart Lesson Notes
+              </h4>
+              <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+                <input 
+                  className="form-input" 
+                  placeholder="Take a note at this timestamp..." 
+                  value={noteText}
+                  onChange={(e) => setNoteText(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && addNote()}
+                />
+                <button className="btn btn-primary" onClick={addNote}>Save</button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {notes.length === 0 && (
+                  <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', textAlign: 'center', padding: '20px' }}>
+                    No notes yet. Start typing above to capture key moments!
+                  </p>
+                )}
+                {notes.map(note => (
+                  <div key={note.id} style={{ display: 'flex', gap: '12px', padding: '12px', background: 'var(--bg-primary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)', group: 'true' }}>
+                    <div
+                      style={{ background: 'rgba(16,185,129,0.1)', color: 'var(--accent)', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 700, height: 'fit-content' }}
+                    >
+                      Note
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: '0.9rem' }}>{note.text}</p>
+                    </div>
+                    <button 
+                      onClick={() => deleteNote(note.id)}
+                      style={{ background: 'none', color: 'var(--danger)', fontSize: '0.8rem', opacity: 0.6 }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Focused Study Timer */}
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: 'var(--radius-lg)', padding: '24px', marginTop: '12px', textAlign: 'center' }}>
+              <h4 style={{ fontWeight: 700, marginBottom: '12px' }}>⏱️ Focused Study Timer</h4>
+              <div style={{ fontSize: '2.5rem', fontWeight: 800, color: 'var(--accent-light)', marginBottom: '16px', fontFamily: 'monospace' }}>
+                {formatTimer(timeLeft)}
+              </div>
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                {!timerActive ? (
+                  <button className="btn btn-primary btn-sm" onClick={() => setTimerActive(true)}>Start Session</button>
+                ) : (
+                  <button className="btn btn-secondary btn-sm" onClick={() => setTimerActive(false)}>Pause</button>
+                )}
+                <button className="btn btn-secondary btn-sm" onClick={() => { setTimerActive(false); setTimeLeft(25 * 60); }}>Reset</button>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '12px' }}>
+                25 minutes of deep focus followed by a 5-minute break.
+              </p>
             </div>
           </div>
 

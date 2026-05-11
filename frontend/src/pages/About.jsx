@@ -25,7 +25,7 @@ export default function About() {
             ))}
           </div>
           <div style={{ textAlign: 'center', padding: '40px', background: 'var(--bg-card)', borderRadius: 'var(--radius-xl)', border: '1px solid var(--border)' }}>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '16px' }}>MCA Final Year Project</h2>
+            <h2 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '16px' }}>Internship Final Year Project</h2>
             <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', lineHeight: '1.7' }}>
               This Online Learning Platform is developed as a Full Stack Java Project demonstrating modern web development practices including React.js, Spring Boot, MySQL, JWT Authentication, and responsive design.
             </p>

@@ -1,0 +1,9 @@
+# Root ignores
+data/
+*.db
+.idea/
+.vscode/
+target/
+*.log
+.env
+.DS_Store

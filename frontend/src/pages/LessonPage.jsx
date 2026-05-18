@@ -116,10 +116,26 @@ export default function LessonPage() {
 
   const getEmbedUrl = (url) => {
     if (!url) return '';
-    const videoId = url.split('v=')[1];
-    const ampersandPosition = videoId ? videoId.indexOf('&') : -1;
-    const finalId = ampersandPosition !== -1 ? videoId.substring(0, ampersandPosition) : videoId;
-    return `https://www.youtube.com/embed/${finalId}?autoplay=1`;
+    let videoId = '';
+    let startTime = '';
+
+    if (url.includes('v=')) {
+      videoId = url.split('v=')[1].split('&')[0];
+    } else if (url.includes('youtu.be/')) {
+      videoId = url.split('youtu.be/')[1].split('?')[0];
+    }
+
+    if (url.includes('t=')) {
+      const tMatch = url.match(/t=(\d+)s?/);
+      if (tMatch && tMatch[1]) {
+        startTime = `&start=${tMatch[1]}`;
+      }
+    }
+
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1${startTime}`;
+    }
+    return url;
   };
 
   return (
